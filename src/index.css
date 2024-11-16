@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 30px;
+  font-family: sans-serif;
+  letter-spacing: normal;
+  scroll-behavior: smooth;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.active {
+  @apply text-[#e8f5f1] bg-[#1b775a] rounded-md px-4 
+}
+
+.active:hover {
+  text-decoration: none;
+}
+
+/* Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.primary-btn {
+  @apply text-light bg-primary px-4 py-2 rounded-md hover:bg-secondary disabled:cursor-not-allowed;
+}
+.secondary-btn {
+  @apply text-light bg-secondary px-4 py-1 rounded-md hover:bg-opacity-80 disabled:cursor-not-allowed;
+}
+
+.input {
+  @apply bg-gray-50 text-gray-700   focus:outline-none focus:border-primary focus:dark:border-primary border  border-gray-300   rounded-md py-2 px-4  w-full appearance-none disabled:cursor-not-allowed;
+}
+.file-input {
+  @apply rounded-md file:mr-4 file:py-[11px] file:px-4 file:border-0 shadow   bg-primary text-light;
+}
+
+/* Accordion  faqs */
+.accordion.active {
+  @apply dark:text-light;
+}
+
+.isOpen {
+  @apply max-h-screen p-4;
+}
