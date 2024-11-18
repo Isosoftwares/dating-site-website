@@ -3,12 +3,13 @@ import { Carousel } from "@mantine/carousel";
 import { IoCloseSharp } from "react-icons/io5";
 import { FaRegMessage } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import avatar from "../../assets/avatar.png";
 
 function PictureCarousel({ user, closeModal }) {
   const slides = user?.images.map((url) => (
     <Carousel.Slide key={url}>
       <img
-        src={url}
+        src={url || avatar}
         loading="lazy"
         alt=""
         className=" max-h-[400px] w-full object-cover  "
