@@ -19,8 +19,6 @@ import ClientOverview from "./client-dashboard/ClientOverview";
 import { MantineProvider } from "@mantine/core";
 import ChangePassword from "./client-dashboard/components/ChangePassword";
 import "@mantine/core/styles.css";
-import Payments from "./client-dashboard/Payments";
-import Support from "./client-dashboard/Support";
 import Clients from "./admin/Clients";
 import AllPayments from "./admin/AllPayments";
 import Account from "./admin/Account";
@@ -33,7 +31,7 @@ import "@mantine/carousel/styles.css";
 import ViewUser from "./client-dashboard/ViewUser";
 import Online from "./client-dashboard/Online";
 import ClientProfile from "./client-dashboard/ClientProfile";
-import Messages from "./client-dashboard/Messages";
+import MessagesPage from "./client-dashboard/messaging/MessagesPage";
 import EditProfile from "./client-dashboard/EditProfile";
 
 const App = () => {
@@ -88,7 +86,7 @@ const App = () => {
                       <Route path="online" element={<Online />} />
                       <Route path="profile" element={<ClientProfile />} />
                       <Route path="edit-profile" element={<EditProfile />} />
-                      <Route path="messages" element={<Messages />} />
+                      <Route path="messages" element={<MessagesPage />} />
                       <Route path="user/:_id" element={<ViewUser />} />
                     </Route>
                   </Route>

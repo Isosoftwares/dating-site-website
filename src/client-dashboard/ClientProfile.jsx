@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";
 import { Modal, Skeleton } from "@mantine/core";
@@ -10,11 +10,14 @@ import avatar from "../assets/holder.png";
 import { useDisclosure } from "@mantine/hooks";
 import UploadProfilePic from "./components/UploadProfilePic";
 import UploadImages from "./components/UploadImages";
+import { RiDeleteBin5Fill } from "react-icons/ri";
+import RemoveOnePhoto from "./components/RemoveOnePhoto";
 
 function ClientProfile() {
   const navigate = useNavigate();
   const { auth } = useAuth();
   const axios = useAxiosPrivate();
+  const [filePath, setFilePath] = useState("");
   const logout = useLogout();
   const [
     openedUploadPic,
@@ -24,6 +27,10 @@ function ClientProfile() {
   const [
     openedUploadImages,
     { open: openUploadImages, close: closeUploadImages },
+  ] = useDisclosure(false);
+  const [
+    openedRemoveImage,
+    { open: openRemoveImage, close: closeRemoveImage },
   ] = useDisclosure(false);
 
   // Fetch user details
@@ -53,12 +60,24 @@ function ClientProfile() {
 
   const slides = user?.images.map((url) => (
     <Carousel.Slide key={url}>
-      <img
-        src={url}
-        loading="lazy"
-        alt=""
-        className=" max-h-[400px]  w-full object-cover rounde "
-      />
+      <div className="relative group ">
+        <img
+          src={url}
+          loading="lazy"
+          alt=""
+          className=" max-h-[400px]  w-full object-cover rounde "
+        />
+        <div
+          title="Remove photo"
+          className="absolute top-2 group:hover:flex right-2 cursor-pointer border-2 rounded-md bg-red-200 border-red-400 p-1 "
+          onClick={() => {
+            setFilePath(url);
+            openRemoveImage()
+          }}
+        >
+          <RiDeleteBin5Fill size={34} color="#AE445A" />
+        </div>
+      </div>
     </Carousel.Slide>
   ));
 
@@ -78,12 +97,25 @@ function ClientProfile() {
       >
         <UploadImages userId={user?._id} closeModal={closeUploadImages} />
       </Modal>
+      <Modal
+        opened={openedRemoveImage}
+        onClose={closeRemoveImage}
+        title="Remove photo"
+      >
+        <RemoveOnePhoto
+          userId={user?._id}
+          filePath={filePath}
+          closeModal={closeRemoveImage}
+        />
+      </Modal>
       {/* Retained Original Section */}
       <div className="bg-primary/20 pt-[40px] md:pt-[40px] pb-10 px-3 md:px-8 xl:px-[100px]">
         <div className="flex justify-start gap-4 items-center">
           <p className="font-bold text-xl text-gray-600">Profile Info</p>
           <div>
-            <Link to={'/client/edit-profile'} className="secondary-btn">Edit Profile</Link>
+            <Link to={"/client/edit-profile"} className="secondary-btn">
+              Edit Profile
+            </Link>
           </div>
         </div>
       </div>
@@ -136,7 +168,10 @@ function ClientProfile() {
             <div className="flex-1">
               <h3 className="text-lg font-semibold text-secondary  border-b border-b-secondary mb-2">
                 My photos
-                <span onClick={openUploadImages} className="primary-btn mx-3 ">
+                <span
+                  onClick={openUploadImages}
+                  className="primary-btn mx-3 cursor-pointer "
+                >
                   Add Photos
                 </span>
               </h3>
