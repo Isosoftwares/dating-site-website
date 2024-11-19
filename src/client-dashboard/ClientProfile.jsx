@@ -35,7 +35,7 @@ function ClientProfile() {
 
   // Fetch user details
   const getUser = async () => {
-    return await axios.get(`/user/account/${auth?.userId}`);
+    return await axios.get(`/user/account/user/${auth?.userId}`);
   };
 
   const { isLoading, data: userData } = useQuery({
