@@ -37,6 +37,9 @@ import Subscriptions from "./client-dashboard/subscriptions/Subscriptions";
 import Overview from "./admin/Overview";
 import UserSubscriptions from "./admin/UserSubscriptions";
 import SubscriptionsAdmin from "./admin/SubscriptionsAdmin";
+import Success from "./client-dashboard/subscriptions/Success";
+import Failed from "./client-dashboard/subscriptions/Failed";
+import MyMembership from "./client-dashboard/subscriptions/MyMembership";
 
 const App = () => {
   const queryClient = new QueryClient();
@@ -96,7 +99,13 @@ const App = () => {
                       <Route path="favorites" element={<Favorites />} />
                       <Route path="profile-views" element={<ProfileViews />} />
                       <Route path="upgrade" element={<Subscriptions />} />
-                      <Route path="change-password" element={<ChangePassword />} />
+                      <Route path="my-membership" element={<MyMembership />} />
+                      <Route
+                        path="change-password"
+                        element={<ChangePassword />}
+                      />
+                      <Route path="payment-successful" element={<Success />} />
+                      <Route path="payment-failed" element={<Failed />} />
                     </Route>
                   </Route>
 
@@ -106,8 +115,14 @@ const App = () => {
                       <Route index element={<Overview />} />
                       <Route path="overview" element={<Overview />} />
                       <Route path="clients" element={<Clients />} />
-                      <Route path="manage-subscriptions" element={<SubscriptionsAdmin />} />
-                      <Route path="client-subscriptions" element={<UserSubscriptions />} />
+                      <Route
+                        path="manage-subscriptions"
+                        element={<SubscriptionsAdmin />}
+                      />
+                      <Route
+                        path="client-subscriptions"
+                        element={<UserSubscriptions />}
+                      />
                       <Route path="account" element={<Account />} />
                       <Route
                         path="clients/:_id"

@@ -13,7 +13,7 @@ function UserSubscriptions() {
   // get subs
   const getClientSWithSubs = async () => {
     return await axios.get(
-      `/client-subscriptions?hasSubscription=${hasSubscription}&subscriptionId=${subscriptionId}`
+      `/user-subscriptions?hasSubscription=${hasSubscription}&subscriptionId=${subscriptionId}`
     );
   };
 

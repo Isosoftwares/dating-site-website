@@ -69,10 +69,12 @@ function ClientProfile() {
         />
         <div
           title="Remove photo"
-          className="absolute top-2 group:hover:flex right-2 cursor-pointer border-2 rounded-md bg-red-200 border-red-400 p-1 "
+          className={` ${
+            url === user?.profileImg && "hidden"
+          } absolute top-2 group:hover:flex right-2 cursor-pointer border-2 rounded-md bg-red-200 border-red-400 p-1 `}
           onClick={() => {
             setFilePath(url);
-            openRemoveImage()
+            openRemoveImage();
           }}
         >
           <RiDeleteBin5Fill size={34} color="#AE445A" />

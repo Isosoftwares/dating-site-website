@@ -34,7 +34,6 @@ function DeleteSubscription({ subscription, handleClose }) {
         Are you sure you want to delete this subscription:
       </p>
       <p className="font-bold">Name:{subscription?.name}</p>
-      <p className="font-bold">Service:{subscription?.serviceName}</p>
       <p className="font-bold">AMount: ${subscription?.amount}</p>
 
       <div>

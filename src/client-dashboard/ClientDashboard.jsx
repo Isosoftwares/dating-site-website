@@ -161,7 +161,7 @@ function ClientDashboard() {
                 </div>
                 <Menu.Item>
                   <Link
-                    to={"/client/support"}
+                    to={"/client/my-membership"}
                     className="flex items-center gap-2 border-b"
                   >
                     <MdOutlineSupportAgent />

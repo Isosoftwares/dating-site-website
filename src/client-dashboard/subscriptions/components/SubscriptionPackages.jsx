@@ -45,7 +45,7 @@ function SubscriptionPackages({ serviceName, inModal }) {
       const url = response.data.url;
       const text = response.data.message;
       if (url !== "No url") {
-        window.location = url;
+        window.open(url, '_blank');
       }
       toast.success(text);
       //   queryClient.invalidateQueries([`subscriptions`]);
@@ -56,13 +56,6 @@ function SubscriptionPackages({ serviceName, inModal }) {
       toast.error(text);
     },
   });
-
-  const freePoints = [
-    "Access to all free practice test questions",
-    "Performance monitoring and insights",
-    "Questions with in-depth explanations",
-    "Thorough performance analysis",
-  ];
 
   const numberOfDays = (duration) => {
     return `For ${duration * 30} Days`;
@@ -115,7 +108,7 @@ function SubscriptionPackages({ serviceName, inModal }) {
                         } shadow-lg mt-3 block w-full rounded-md border border-gray-800 bg-primary py-2 text-center disabled:bg-gray-500  font-semibold text-white hover:bg-gray-900`}
                         onClick={() => {
                           subscribeMutate({
-                            clientId: auth?.userId,
+                            userId: auth?.userId,
                             subscriptionId: item?._id,
                           });
                         }}
