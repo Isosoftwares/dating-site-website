@@ -23,7 +23,7 @@ function Login() {
     reset,
   } = useForm();
 
-  const toDash = location.state?.from?.pathname || "/dashboard/clients";
+  const toDash = location.state?.from?.pathname || "/dashboard/overview";
   const toClient = location.state?.from?.pathname || "/client/overview";
 
   // Mutation for login
@@ -36,11 +36,9 @@ function Login() {
         user_Id: userId,
         userName: userName,
         email,
-        imgUrl
-
+        imgUrl,
       } = response?.data;
       setAuth({ roles, accessToken, userId, userName, email, imgUrl });
-
       localStorage.setItem("userId", JSON.stringify(userId));
       const text = `Welcome back ${userName || ""}`;
       if (roles?.includes("Client")) {
@@ -54,7 +52,7 @@ function Login() {
       }
     },
     onError: (err) => {
-      console.log(err);
+      // console.log(err);
       const errorMessage =
         err?.response?.data?.message || "Something went wrong";
       toast.error(errorMessage);

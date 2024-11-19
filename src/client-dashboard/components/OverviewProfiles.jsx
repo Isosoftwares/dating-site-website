@@ -3,7 +3,7 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import useAuth from "../../hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import { useMediaQuery } from "@mantine/hooks";
-import { Skeleton } from "@mantine/core";
+import { Pagination, Skeleton } from "@mantine/core";
 import UserCard from "./UserCard";
 
 function OverviewProfiles() {
@@ -117,6 +117,16 @@ function OverviewProfiles() {
                 </div>
               );
             })}
+          </div>
+        )}
+        {totalPages > 0 && (
+          <div className="mt-4 bg-light py-3 px-2  ">
+            <Pagination
+              color="orange"
+              value={activePage}
+              onChange={setPage}
+              total={totalPages}
+            />
           </div>
         )}
       </div>

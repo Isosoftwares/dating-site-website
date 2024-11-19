@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { MdDashboard, MdOutlinePayment, MdClose } from "react-icons/md";
-import Logo from "../../assets/logo1.png";
-import logo2 from "../../assets/logo1.png";
+import Logo from "../../assets/logo5.png";
 import { RiLockPasswordFill } from "react-icons/ri";
+import { FaUsersGear } from "react-icons/fa6";
+import { FaCreditCard } from "react-icons/fa";
+
 function SideNav({ mobileMenu, handleMenu }) {
   const location = useLocation();
   const { pathname } = location;
@@ -13,9 +15,24 @@ function SideNav({ mobileMenu, handleMenu }) {
       name: "Home",
       links: [
         {
-          name: "Clients",
-          path: "/dashboard/clients",
+          name: "Overview",
+          path: "/dashboard/overview",
           icon: <MdDashboard size={18} />,
+        },
+      ],
+    },
+    {
+      name: "Users",
+      links: [
+        {
+          name: "Users",
+          path: "/dashboard/clients",
+          icon: <FaUsersGear size={18} />,
+        },
+        {
+          name: "User Subscriptions",
+          path: "/dashboard/client-subscriptions",
+          icon: <FaCreditCard size={18} />,
         },
       ],
     },
@@ -23,9 +40,9 @@ function SideNav({ mobileMenu, handleMenu }) {
       name: "My Account",
       links: [
         {
-          name: "Payments",
-          path: "/dashboard/payments",
-          icon: <MdOutlinePayment size={18} />,
+          name: "Manage subscriptions",
+          path: "/dashboard/manage-subscriptions",
+          icon: <FaCreditCard size={18} />,
         },
         {
           name: "Account",
@@ -35,20 +52,15 @@ function SideNav({ mobileMenu, handleMenu }) {
       ],
     },
   ];
-  const theme = localStorage.getItem("theme");
 
   return (
     <div>
       <div
-        className={`theme h-screen  no-scrollbar  hidden lg:inline-block  text-dark   z-50   w-80  overflow-y-auto shadow-md   `}
+        className={`h-screen  no-scrollbar  hidden lg:inline-block  text-dark  bg-light z-50   w-80  overflow-y-auto shadow-md  `}
       >
         <div className=" py-[14px] mb-4 border-b-2 border-b-secondary ">
           <Link to={"/"} className="  ">
-            <img
-              src={theme === "light" ? Logo : logo2}
-              alt=""
-              className="h-[80px] "
-            />
+            <img src={Logo} alt="" className="h-12 object-cover w-full " />
           </Link>
         </div>
         <div className="px-2">
@@ -71,11 +83,11 @@ function SideNav({ mobileMenu, handleMenu }) {
                             key={index}
                             className={` ${
                               pathname?.includes(item.path) &&
-                              "dark:bg-secondary/20 bg-secondary/50 text rounded-md shadow-md shadow-primary/10 "
-                            } flex gap-2 mt-1 text-dark dark:text-light items-center px-4 py-2 dark:hover:bg-secondary/20 hover:bg-secondary/50 hover:text  hover:rounded-md `}
+                              " bg-primary/50 text rounded-md shadow-sm shadow-primary/50 "
+                            } flex gap-2 mt-1  items-center px-4 py-2 text-gray-700  hover:bg-primary/50 hover:text  hover:rounded-md `}
                           >
                             {item?.icon}
-                            <p>{item.name}</p>
+                            <p className="font-bold">{item.name}</p>
                           </Link>
                         );
                       })}
@@ -92,17 +104,13 @@ function SideNav({ mobileMenu, handleMenu }) {
       <div
         className={`${
           mobileMenu
-            ? "translate-x-0 z-50 dark:bg-dark dark:text-light bg-[#fff] shadow-md shadow-tertiary  h-screen fixed lg:hidden  text-dark  z-60   w-72  overflow-y-auto no-scrollbar transition-transform duration-300  "
+            ? "translate-x-0 z-50  bg-[#fff] shadow-md shadow-tertiary  h-screen fixed lg:hidden  z-60   w-72  overflow-y-auto no-scrollbar transition-transform duration-300  "
             : "hidden"
         }`}
       >
         <div className=" py-5 mb-4 border-b-2 border-b-secondary flex justify-between items-center gap-3 px-2">
-          <Link to={"/"} className="  ">
-            <img
-              src={theme === "light" ? Logo : logo2}
-              alt=""
-              className="h-[70px] "
-            />
+          <Link to={"/dashboard"} className="  ">
+            <img src={Logo} alt="" className="h-10  object-cover w-full " />
           </Link>
           <div
             onClick={(e) => {
@@ -132,8 +140,8 @@ function SideNav({ mobileMenu, handleMenu }) {
                             key={index}
                             className={`${
                               pathname?.includes(item.path) &&
-                              "dark:bg-secondary/20 bg-secondary/50 text rounded-md shadow-md shadow-primary/10 "
-                            } flex gap-2 mt-1 text-dark dark:text-light  items-center px-4 py-2 hover:bg-tertiary hover:bg-secondary/50 hover:rounded-md `}
+                              " bg-primary/50 text rounded-md shadow-md shadow-primary/10 "
+                            } flex gap-2 mt-1   items-center px-4 py-2 text-gray-700 hover:bg-tertiary hover:bg-secondary/50 hover:rounded-md `}
                           >
                             {item?.icon}
                             <p>{item.name}</p>

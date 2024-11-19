@@ -20,19 +20,23 @@ import { MantineProvider } from "@mantine/core";
 import ChangePassword from "./client-dashboard/components/ChangePassword";
 import "@mantine/core/styles.css";
 import Clients from "./admin/Clients";
-import AllPayments from "./admin/AllPayments";
 import Account from "./admin/Account";
 import AdminDashboard from "./admin/AdminDashboard";
 import ClientDetailsAdmin from "./admin/ClientDetailsAdmin";
-import PaymentIframe from "./client-dashboard/PaymentIframe";
 import Contact from "./pages/Contact";
-import MessagePage from "./admin/MessagePage";
 import "@mantine/carousel/styles.css";
 import ViewUser from "./client-dashboard/ViewUser";
 import Online from "./client-dashboard/Online";
 import ClientProfile from "./client-dashboard/ClientProfile";
 import MessagesPage from "./client-dashboard/messaging/MessagesPage";
 import EditProfile from "./client-dashboard/EditProfile";
+import Likes from "./client-dashboard/activities/Likes";
+import Favorites from "./client-dashboard/activities/Favorites";
+import ProfileViews from "./client-dashboard/activities/ProfileViews";
+import Subscriptions from "./client-dashboard/subscriptions/Subscriptions";
+import Overview from "./admin/Overview";
+import UserSubscriptions from "./admin/UserSubscriptions";
+import SubscriptionsAdmin from "./admin/SubscriptionsAdmin";
 
 const App = () => {
   const queryClient = new QueryClient();
@@ -88,22 +92,27 @@ const App = () => {
                       <Route path="edit-profile" element={<EditProfile />} />
                       <Route path="messages" element={<MessagesPage />} />
                       <Route path="user/:_id" element={<ViewUser />} />
+                      <Route path="likes" element={<Likes />} />
+                      <Route path="favorites" element={<Favorites />} />
+                      <Route path="profile-views" element={<ProfileViews />} />
+                      <Route path="upgrade" element={<Subscriptions />} />
+                      <Route path="change-password" element={<ChangePassword />} />
                     </Route>
                   </Route>
 
                   {/* admin dash */}
                   <Route element={<RequireAuth allowedRoles={["Admin"]} />}>
                     <Route exact path="/dashboard" element={<AdminDashboard />}>
-                      <Route index element={<Clients />} />
+                      <Route index element={<Overview />} />
+                      <Route path="overview" element={<Overview />} />
                       <Route path="clients" element={<Clients />} />
-                      <Route path="payments" element={<AllPayments />} />
+                      <Route path="manage-subscriptions" element={<SubscriptionsAdmin />} />
+                      <Route path="client-subscriptions" element={<UserSubscriptions />} />
                       <Route path="account" element={<Account />} />
-                      <Route path="card-payment" element={<PaymentIframe />} />
                       <Route
                         path="clients/:_id"
                         element={<ClientDetailsAdmin />}
                       />
-                      <Route path="message/:_id" element={<MessagePage />} />
                     </Route>
                   </Route>
                 </Route>

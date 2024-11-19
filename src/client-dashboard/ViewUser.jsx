@@ -28,7 +28,7 @@ function ViewUser() {
 
   // get user
   const getUser = async () => {
-    return await axios.get(`/user/account/${_id}`);
+    return await axios.get(`/user/account/user/${_id}`);
   };
   const {
     isLoading: loadingUser,

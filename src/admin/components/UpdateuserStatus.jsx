@@ -7,8 +7,8 @@ function UpdateuserStatus({ status, closeModal, userId }) {
   const queryClient = useQueryClient();
   const axios = useAxiosPrivate();
 
-  const updateFn = () => {
-    return axios.patch(`/users/update/client/${userId}/${status}`);
+  const updateFn = (data) => {
+    return axios.patch(`/auth/update-status`,data);
   };
 
   const { isLoading: loadingUpdate, mutate: activateMutate } = useMutation({
@@ -24,6 +24,15 @@ function UpdateuserStatus({ status, closeModal, userId }) {
       toast.error(text);
     },
   });
+
+  const submit = () => {
+    const data = {
+      userId: userId,
+      userType: "user",
+      status: status,
+    };
+    activateMutate(data);
+  };
 
   return (
     <div>
@@ -43,7 +52,7 @@ function UpdateuserStatus({ status, closeModal, userId }) {
             disabled={loadingUpdate}
             className="rounded-md disabled:bg-gray-800 disabled:cursor-not-allowed  bg-red-500 text-white font-bold px-5 w-[50%] py-1 hover:bg-tertiary "
             onClick={() => {
-              activateMutate();
+              submit();
             }}
           >
             Update

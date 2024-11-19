@@ -8,7 +8,7 @@ function DeleteUser({ deleteUserId, closeModal }) {
   const queryClient = useQueryClient();
 
   const deleteUser = () => {
-    return axios.delete(`/users/delete/client/${deleteUserId}`);
+    return axios.delete(`/user/delete/${deleteUserId}`);
   };
   const { isPending: isDeleting, mutate: deleteusermutate } = useMutation({
     mutationFn: deleteUser,
@@ -26,9 +26,12 @@ function DeleteUser({ deleteUserId, closeModal }) {
   return (
     <div>
       {" "}
-      <div className=" shadow-xl flex flex-col gap-4">
-        <p className="pb-1">Are you sure you want to delete this Buyer?</p>
-        <div className="flex justify-center  gap-1">
+      <div className=" flex flex-col gap-">
+        <p className="pb-">Are you sure you want to delete this Buyer?</p>
+        <p className="font-bold text-red-600">
+          Note:This action is irreversible
+        </p>
+        <div className="flex justify-center  gap-1 mt-4">
           <button
             className="rounded-md  bg-gray-600 text-white w-[50%] font-bold px-5 py-1 hover:bg-tertiary "
             onClick={closeModal}

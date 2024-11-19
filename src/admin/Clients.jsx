@@ -11,12 +11,13 @@ import { IoSearch } from "react-icons/io5";
 
 function Clients() {
   const axios = useAxiosPrivate();
-  const [perPage, setPerPage] = useState(30);
+  const [perPage, setPerPage] = useState(40);
   const [activePage, setPage] = useState(1);
   const [email, setEmail] = useState("");
   const [deleteUserId, setDeleteUserId] = useState("");
   const [userId, setUserId] = useState("");
   const [status, setStatus] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
   const [
     openedAddDelete,
@@ -30,7 +31,7 @@ function Clients() {
 
   const getClients = () => {
     return axios.get(
-      `/users?page=${activePage}&perPage=${perPage}&email=${email}`
+      `/user/all/admin?page=${activePage}&perPage=${perPage}&searchTerm=${searchTerm}`
     );
   };
 
@@ -51,7 +52,7 @@ function Clients() {
   // pagination refetch
   useEffect(() => {
     refetch();
-  }, [activePage, perPage, email]);
+  }, [activePage, perPage, searchTerm]);
 
   //end of fetching buyers------------------
 
@@ -82,10 +83,10 @@ function Clients() {
         />
       </Modal>
 
-      <h1 className="font-bold text-lg">All Clients </h1>
+      <h1 className="font-bold text-lg">All users </h1>
       <div className="my-[4px] ">
         {/* filters */}
-        <div className="theme py-4 px-2">
+        <div className="py-4 px-2 bg-light rounded-md">
           <div className="">
             <div className="relative">
               <div className="absolute text top-4 left-3 ">
@@ -93,11 +94,10 @@ function Clients() {
               </div>
               <input
                 type="text"
-                value={email}
-                placeholder="Search eg example@gmail.com"
-                className="w-full md:w-[50%] lg:w-[30%] px-4 pl-10 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring focus:ring-green-200 dark:focus:ring-green-700 dark:bg-gray-700 dark:text-gray-300 "
+                placeholder="Search by name, email or username"
+                className="w-full md:w-[50%] lg:w-[30%] px-4 pl-10 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-green-200  "
                 onChange={(e) => {
-                  setEmail(e.target.value);
+                  setSearchTerm(e.target.value);
                   setPage(1);
                 }}
               />
@@ -106,7 +106,7 @@ function Clients() {
 
           <div className="overflow-x-auto overflow-y-auto relative shadow-sm sm:rounded-md theme mt-6">
             <table className="w-full text-md text-left">
-              <thead className="text-xs bg-secondary/35 text-dark2 dark:text-light dark:bg-gray-700/20  border-b dark:border-b-gray-800">
+              <thead className="text-xs bg-primary/35  border-b ">
                 <tr>
                   <th className="py-[10px] capitalize text-start px-4 text-md">
                     Id
@@ -146,14 +146,14 @@ function Clients() {
                     return (
                       <tr
                         key={index}
-                        className="theme border-b dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800 dark:odd:bg-dark odd:bg-[#fcfcfc]"
+                        className="theme border-b  hover:bg-gray-50 odd:bg-[#fcfcfc]"
                       >
                         <td className="py-2 text- text-start px-4">
                           {index + 1}
                         </td>
 
                         <td className="py-2 text- text-start px-2">
-                          {item?.name}
+                          {item?.userName}
                         </td>
                         <td className="py-2 text- text-start px-2">
                           {item?.email}
@@ -178,7 +178,7 @@ function Clients() {
                                 setUserId(item?._id);
                                 openUpdateStatus();
                               }}
-                              className="bg-red-500/40  text-red-900 dark:text-red-200 rounded-md px-3 py-1 hover:bg-red-400 disabled:cursor-not-allowed disabled:bg-red-300 disabled:text-gray-300"
+                              className="bg-red-500/40  text-red-900 rounded-md px-3 py-1 hover:bg-red-400 disabled:cursor-not-allowed disabled:bg-red-300 disabled:text-gray-300"
                             >
                               Deactivate
                             </button>
@@ -199,7 +199,7 @@ function Clients() {
                               setDeleteUserId(item?._id);
                               openDelete();
                             }}
-                            className="bg-red-500/40 text-red-900 dark:text-red-200 rounded-md px-3 py-1 hover:bg-red-400 disabled:cursor-not-allowed disabled:bg-red-300 disabled:text-gray-300"
+                            className="bg-red-500/40 text-red-900  rounded-md px-3 py-1 hover:bg-red-400 disabled:cursor-not-allowed disabled:bg-red-300 disabled:text-gray-300"
                           >
                             Delete
                           </button>

@@ -48,24 +48,24 @@ function ChangePassword({ handleCloseModal, userType }) {
       reset();
     },
     onError: (err) => {
-      const text = err?.response?.data?.message 
+      const text = err?.response?.data?.message;
       toast.error(text);
     },
   });
 
   const handlePasswordChange = (data) => {
     data.userId = auth?.userId;
-    data.userType = "client";
+    data.userType = "user";
     changePassMutate(data);
   };
 
   //end of password change
   return (
-    <div className=" ">
+    <div className="mx-auto px-4 md:px-[100px] xl:px-[200px] py-6 bg-light min-h-screen ">
       <p className="font-bold text">Change Account Password</p>
       <div className=" flex flex-col">
         <div className=" mt-3">
-          <div className=" theme px-2 rounded-md shadow-sm">
+          <div className="  px-2 rounded-md shadow-md  w-full md:w-[50%] bg-primary/10 ">
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -80,14 +80,14 @@ function ChangePassword({ handleCloseModal, userType }) {
                     </span>
                   </h1>
                   <div
-                    className={`  flex gap-3 p-2 border border-gray-300 dark:border-gray-700 rounded-md `}
+                    className={` bg-primary/10 flex gap-3 p-2 border border-gray-300 dark:border-gray-700 rounded-md `}
                   >
                     <input
                       type={visiblePassword ? "text" : "password"}
                       {...register("password")}
                       name="password"
                       placeholder="Enter New Password"
-                      className="outline-none theme w-full "
+                      className="outline-none  w-full bg-inherit "
                       disabled={loadingChangePass}
                     />
                     <h1>
@@ -124,14 +124,14 @@ function ChangePassword({ handleCloseModal, userType }) {
                     </span>{" "}
                   </h1>
                   <div
-                    className={`  flex gap-3 p-2 border border-gray-300 dark:border-gray-700 rounded-md `}
+                    className={`bg-primary/10  flex gap-3 p-2 border border-gray-300 dark:border-gray-700 rounded-md `}
                   >
                     <input
                       type={visiblePassword ? "text" : "password"}
                       {...register("confirmPassword")}
                       name="confirmPassword"
                       placeholder="Repeat New Password"
-                      className={`outline-none w-full theme disabled:bg-gray-200 `}
+                      className={`outline-none w-full bg-inherit   `}
                       disabled={loadingChangePass}
                     />
                     <h1>

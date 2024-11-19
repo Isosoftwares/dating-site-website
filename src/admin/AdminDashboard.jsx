@@ -4,21 +4,13 @@ import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { MdMenu, MdClose } from "react-icons/md";
 import useAuth from "../hooks/useAuth";
 import SideNav from "./components/SideNav";
-import {
-  Avatar,
-  Button,
-  Drawer,
-  Indicator,
-  Menu,
-  Skeleton,
-} from "@mantine/core";
+import { Button, Indicator, Menu } from "@mantine/core";
 import { PiPasswordBold } from "react-icons/pi";
 import { BiLogOut } from "react-icons/bi";
 import useLogout from "../hooks/useLogout";
 import { MdNotifications } from "react-icons/md";
 import { FaAngleDown } from "react-icons/fa6";
 import { useDisclosure } from "@mantine/hooks";
-import ContactMessages from "./components/ContactMessages";
 import { useQuery } from "@tanstack/react-query";
 
 function AdminDashboard({}) {
@@ -43,31 +35,9 @@ function AdminDashboard({}) {
     navigate("/");
   };
 
-  // get unread messages
-  const fetchUnreadMessages = () => {
-    return axios.get(`/support/admin-unread`);
-  };
-
-  const { isLoading: loadingGetUnread, data: messagesData, refetch } = useQuery(
-    {
-      queryKey: [`unread-messages-`],
-      queryFn: fetchUnreadMessages,
-      refetchOnWindowFocus: true,
-      keepPreviousData: true,
-    }
-  );
-
   return (
     <div className="">
-      <Drawer
-        opened={openedDrawer}
-        position="right"
-        onClose={closeDrawer}
-        title="User Messages From conctu us from"
-      >
-        <ContactMessages closeDrawer={closeDrawer} />
-      </Drawer>
-      <div className="flex bg-[#fafafa] dark:bg-[#0b132be7]">
+      <div className="flex ">
         <SideNav mobileMenu={mobileMenu} handleMenu={handleMenu} />
 
         <div
@@ -76,7 +46,7 @@ function AdminDashboard({}) {
             if (mobileMenu) setMobileMenu(false);
           }}
         >
-          <div className="flex absolute z-30 top-2 right-0 left-0 dark:bg-dark bg-light mx-3  shadow-sm rounded-md justify-between items-center px-3 pt-2 pb-4">
+          <div className="flex absolute z-30 top-0 right-0 left-0   bg-light   shadow-sm  justify-between items-center px-3 py-3">
             <div className="flex ">
               <div className="lg:hidden pr-3">
                 {mobileMenu ? (
@@ -90,7 +60,7 @@ function AdminDashboard({}) {
                 )}
               </div>
               <div className="hidden md:inline-block ">
-                <p className="font-bold dark:text-light ">
+                <p className="font-bold">
                   Hello,{" "}
                   <span className="capitalize font-bold ">
                     {auth?.userName || "User"}
@@ -103,21 +73,7 @@ function AdminDashboard({}) {
               </div>
             </div>
             <div className="flex items-center gap-3 cursor-pointer mr-3 ">
-              <div className="flex items-center gap-6 dark:text-light text-[#454454] ">
-                <div className="" onClick={openDrawer}>
-                  {messagesData?.data?.totalAdminUnread > 0 ? (
-                    <Indicator
-                      label={messagesData?.data?.totalAdminUnread}
-                      size={16}
-                      offset={3}
-                    >
-                      <MdNotifications size={25} />
-                    </Indicator>
-                  ) : (
-                    <MdNotifications size={25} />
-                  )}
-                </div>
-              </div>
+              <div className="flex items-center gap-6 "></div>
               <Menu shadow="md" width={250} classNames="mr-3 bg-gray-700">
                 <Menu.Target>
                   <Button color="#00712D">

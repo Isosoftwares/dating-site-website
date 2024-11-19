@@ -16,7 +16,7 @@ html {
 }
 
 .active {
-  @apply text-[#e8f5f1] bg-[#1b775a] rounded-md px-4 
+  @apply text-[#e8f5f1] bg-[#1b775a] rounded-md px-4 hover:text-secondary
 }
 
 .active:hover {

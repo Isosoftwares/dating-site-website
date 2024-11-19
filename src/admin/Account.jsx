@@ -28,7 +28,7 @@ function Account() {
 
   // get user
   const getUser = async () => {
-    return await axios.get(`/users/account/admin/${auth?.userId}`);
+    return await axios.get(`/user/account/admin/${auth?.userId}`);
   };
 
   const {
@@ -44,7 +44,7 @@ function Account() {
 
   // edit user
   const editFn = (data) => {
-    return axios.patch("/users/edit/user-details", data);
+    return axios.patch("/user/edit/admin", data);
   };
 
   const { mutate: editMutate, isPending: loadingEdit, error } = useMutation({
@@ -80,16 +80,16 @@ function Account() {
         <ChangePasswordAdmin handleCloseModal={close} userType={"user"} />
       </Modal>
       <Skeleton visible={loadingUser}>
-        <div className="bg-white dark:bg-dark dark:border-gray-800 dark:text-light overflow-hidden shadow rounded-lg border w-full">
+        <div className="bg-white  overflow-hidden shadow rounded-lg border w-full">
           <div className="px-4 py-5 sm:px-6 flex items-center justify-between">
             <div>
-              <h3 className="text-lg leading-6 font-bold dark:text-light text">
+              <h3 className="text-lg leading-6 font-bold ">
                 Profile Information
               </h3>
-              <p className="mt-1 max-w-2xl text-sm text-gray-700 dark:text-light">
+              <p className="mt-1 max-w-2xl text-sm text-gray-700 ">
                 Join date:{" "}
                 <span className="text mt-1 max-w-2xl text-sm">
-                  {userData?.data?.createdAt?.split("T")[0]}
+                  {userData?.data?.user?.createdAt?.split("T")[0]}
                 </span>
               </p>
             </div>
@@ -107,18 +107,18 @@ function Account() {
             </div>
           </div>
           <form action="" onSubmit={handleSubmit(onSubmitting)}>
-            <div className="border-t border-gray-200 dark:border-gray-800 px-4 py-5 sm:p-0">
-              <dl className="sm:divide-y sm:divide-gray-200 dark:sm:divide-gray-800 ">
+            <div className="border-t border-gray-200  px-4 py-5 sm:p-0">
+              <dl className="sm:divide-y sm:divide-gray-200  ">
                 <div className="py-3 sm:py-5 flex sm:gap-4 sm:px-6">
                   <dt className="text-sm font-medium w-full text">User name</dt>
                   {editDetails ? (
                     <div className="w-full">
                       <input
-                        defaultValue={userData?.data?.name}
+                        defaultValue={userData?.data?.user?.userName}
                         className={`input`}
                         type="text"
                         placeholder="Enter username"
-                        {...register("name", {
+                        {...register("userName", {
                           required: false,
                         })}
                       />
@@ -129,7 +129,7 @@ function Account() {
                     </div>
                   ) : (
                     <dd className="mt-1 text-sm text w-full sm:mt-0 sm:col-span-2">
-                      {userData?.data?.name || "N/A"}
+                      {userData?.data?.user?.userName || "N/A"}
                     </dd>
                   )}
                 </div>
@@ -140,7 +140,7 @@ function Account() {
                   {editDetails ? (
                     <div className="w-full">
                       <input
-                        defaultValue={userData?.data?.email}
+                        defaultValue={userData?.data?.user?.email}
                         className={`input`}
                         type="email"
                         placeholder="Enter email"
@@ -155,31 +155,7 @@ function Account() {
                     </div>
                   ) : (
                     <dd className="mt-1 text-sm text w-full sm:mt-0 sm:col-span-2">
-                      {userData?.data?.email}
-                    </dd>
-                  )}
-                </div>
-                <div className="py-3 sm:py-5 flex  sm:gap-4 sm:px-6">
-                  <dt className="text-sm font-medium w-full text">Phone No</dt>
-                  {editDetails ? (
-                    <div className="w-full">
-                      <input
-                        defaultValue={userData?.data?.phoneNo}
-                        className={`input`}
-                        type="number"
-                        placeholder="Enter phone no"
-                        {...register("phoneNo", {
-                          required: true,
-                        })}
-                      />
-                      <p className="text-red-500 text-xs">
-                        {errors.email?.type === "required" &&
-                          "Phone number is required"}
-                      </p>
-                    </div>
-                  ) : (
-                    <dd className="mt-1 text-sm text w-full sm:mt-0 sm:col-span-2">
-                      {userData?.data?.phoneNo}
+                      {userData?.data?.user?.email}
                     </dd>
                   )}
                 </div>
@@ -215,8 +191,8 @@ function Account() {
       </Skeleton>
 
       {/* edit password */}
-      <div className=" w-full border bg-white dark:bg-dark shadow rounded-lg dark:border-gray-800 ">
-        <div className=" dark:text-light dark:border-none overflow-hidden  min-h-[230px]  border p-2 ">
+      <div className=" w-full border bg-white shadow rounded-lg  ">
+        <div className="  overflow-hidden  min-h-[230px]  border p-2 ">
           <p>Actions</p>
           <Divider />
           <div className="flex justify-start items-center gap-2 my-5 ">
