@@ -90,6 +90,49 @@ function ClientDashboard() {
           {/* Links */}
           <div className="hidden w-full gap-4 lg:flex justify-evenly">
             {navLinks.map((item) => {
+              if (item?.name === "Activity")
+                return (
+                  <Menu shadow="md" width={200} trigger="click-hover">
+                    <Menu.Target>
+                      <div className="flex items-center gap-1 cursor-pointer text-light hover:underline underline-offset-4 ">
+                        <p className="text-light ">Activity</p>
+                        <p>
+                          <FaChevronDown />
+                        </p>
+                      </div>
+                    </Menu.Target>
+
+                    <Menu.Dropdown>
+                      <Menu.Item>
+                        <Link
+                          to={"/client/likes"}
+                          className="flex items-center w-full hover:text-secondary hover:underline "
+                        >
+                          Likes
+                        </Link>
+                      </Menu.Item>
+                      <Menu.Divider />
+                      <Menu.Item>
+                        <Link
+                          to={"/client/profile-views"}
+                          className="flex items-center w-full hover:text-secondary hover:underline "
+                        >
+                          Profile Views
+                        </Link>
+                      </Menu.Item>
+                      <Menu.Divider />
+                      <Menu.Item>
+                        <Link
+                          to={"/client/favorites"}
+                          className="flex items-center w-full hover:text-secondary hover:underline "
+                        >
+                          Favorites
+                        </Link>
+                      </Menu.Item>
+                      <Menu.Divider />
+                    </Menu.Dropdown>
+                  </Menu>
+                );
               return (
                 <NavLink
                   key={item.id}
@@ -103,7 +146,7 @@ function ClientDashboard() {
           </div>
           {/* Profile */}
           <div className="flex items-center justify-end w-full gap-3 mr-3 cursor-pointer">
-            <Link to={"/client/subscription"}>
+            <Link to={"/client/upgrade"}>
               <button className="px-6 py-1 duration-300 ease-in-out rounded-md bg-light text-primary hover:px-8">
                 Upgrade
               </button>
@@ -155,16 +198,59 @@ function ClientDashboard() {
               <MdClose size={30} color="#00b8a9" onClick={handleMenu} />
             </div>
             <ul className="flex flex-col mt-4 font-semibold divide-y-2">
-              {navLinks.map((item) => (
-                <NavLink
-                  to={item.path}
-                  key={item.id}
-                  className="px-3 py-2 rounded-sm hover:text-dark hover:bg-primary"
-                  onClick={handleMenu}
-                >
-                  {item.name}
-                </NavLink>
-              ))}
+              {navLinks.map((item) => {
+                if (item?.name === "Activity")
+                  return (
+                    <div>
+                      <div
+                        onClick={toggle}
+                        className="flex items-center justify-between "
+                      >
+                        <p>Activity</p>
+                        <FaChevronDown />
+                      </div>
+                      <Collapse in={opened}>
+                        <div
+                          className={`flex flex-col ${
+                            opened && "bg-gray-100 rounded-md divide-y-2 "
+                          } `}
+                        >
+                          <Link
+                            to={"/client/likes"}
+                            className="px-3 py-1 rounded-sm hover:text-dark hover:bg-primary"
+                            onClick={handleMenu}
+                          >
+                            Likes
+                          </Link>
+                          <Link
+                            to={"/client/profile-views"}
+                            className="px-3 py-1 rounded-sm hover:text-dark hover:bg-primary"
+                            onClick={handleMenu}
+                          >
+                            Profile Views
+                          </Link>
+                          <Link
+                            to={"/client/favorites"}
+                            className="px-3 py-1 rounded-sm hover:text-dark hover:bg-primary"
+                            onClick={handleMenu}
+                          >
+                            Favorites
+                          </Link>
+                        </div>
+                      </Collapse>
+                    </div>
+                  );
+                return (
+                  <NavLink
+                    to={item.path}
+                    key={item.id}
+                    className="px-3 py-2 rounded-sm hover:text-dark hover:bg-primary"
+                    onClick={handleMenu}
+                  >
+                    {item.name}
+                  </NavLink>
+                );
+              })}
             </ul>
           </div>
         )}
