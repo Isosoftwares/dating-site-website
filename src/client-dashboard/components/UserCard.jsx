@@ -6,16 +6,20 @@ import { Link } from "react-router-dom";
 import { Indicator, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import PictureCarousel from "./PictureCarousel";
+import StartConversationModal from "./StartConversationModal";
 
 function UserCard({ user }) {
-  const [
-    openedViewPics,
-    { open: openViewPic, close: closeViewPic },
-  ] = useDisclosure(false);
+  const [openedViewPics, { open: openViewPic, close: closeViewPic }] =
+    useDisclosure(false);
+
+  const [openedStartConvo, { open: openStartConvo, close: closeStartConvo }] =
+    useDisclosure(false);
+
   const date = new Date();
   const year = date.getFullYear();
+
   return (
-    <div className="bg-light rounded-md shadow-sm ">
+    <div className="rounded-md shadow-sm bg-light ">
       <Modal
         opened={openedViewPics}
         onClose={closeViewPic}
@@ -29,7 +33,23 @@ function UserCard({ user }) {
       >
         <PictureCarousel user={user} closeModal={closeViewPic} />
       </Modal>
-      <div className=" overflow-hidden relative rounded-t-md">
+
+      {/* start conversation modal */}
+      <Modal
+        opened={openedStartConvo}
+        onClose={closeStartConvo}
+        centered
+        transitionProps={{ duration: 200 }}
+        overlayProps={{
+          backgroundOpacity: 0.7,
+          blur: 3,
+        }}
+        size={"lg"}
+        withCloseButton={false}
+      >
+        <StartConversationModal user={user} closeModal={closeStartConvo} />
+      </Modal>
+      <div className="relative overflow-hidden rounded-t-md">
         <Link to={`/client/user/${user?._id}`}>
           <img
             src={user?.profileImg ? user?.profileImg : avatar}
@@ -68,7 +88,12 @@ function UserCard({ user }) {
               {" "}
               <FaRegHeart size={25} color="#FA812F" />
             </span>
-            <span className="p-1 cursor-pointer ">
+            <span
+              onClick={() => {
+                openStartConvo();
+              }}
+              className="p-1 cursor-pointer "
+            >
               {" "}
               <FaRegMessage size={25} color="#FA812F" />
             </span>
@@ -78,11 +103,11 @@ function UserCard({ user }) {
                   openViewPic();
                 }
               }}
-              className="p-1 cursor-pointer relative "
+              className="relative p-1 cursor-pointer "
             >
               {" "}
               <FaCamera size={25} color="#FA812F" />
-              <span className=" absolute text-xs text-secondary -bottom-1 -right-1  ">
+              <span className="absolute text-xs text-secondary -bottom-1 -right-1">
                 {user?.images?.length ? user?.images?.length : ""}
               </span>
             </span>

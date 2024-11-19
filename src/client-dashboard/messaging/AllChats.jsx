@@ -3,24 +3,23 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Avatar, Loader, Pagination } from "@mantine/core";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import avatar from "../../assets/avatar.png";
+import useAuth from "../../hooks/useAuth";
 
 function Support({ handleChatId }) {
   const axios = useAxiosPrivate();
 
   const [perPage, setPerPage] = useState(10);
   const [activePage, setPage] = useState(1);
-  const [jabberId, setJabberId] = useState("");
+  const [conversationId, setJabberId] = useState("");
   const [userName, setUserName] = useState("");
   const [role, setRole] = useState("");
 
   const queryClient = useQueryClient();
 
-  // const { auth } = useAuth();
+  const { auth } = useAuth();
 
   const fetchMessages = () => {
-    return axios.get(
-      `/support?page=${activePage}&perPage=${perPage}&userName=${userName}&jabberId=${jabberId}&role=${role}`
-    );
+    return axios.get(`/message/chats/${auth?.userId}`);
   };
 
   const {
@@ -41,17 +40,65 @@ function Support({ handleChatId }) {
   // pagination refetch
   useEffect(() => {
     refetch();
-  }, [activePage, perPage, userName, jabberId, role]);
+  }, [activePage, perPage, userName, conversationId, role]);
+
+  function getOtherUserName(users, userId) {
+    // Check if the array has more than two users
+    if (!users?.length) {
+      return "Group";
+    }
+    if (users?.length > 2) {
+      return "Group";
+    }
+
+    // Find the user that does not match the given userId
+    const otherUser = users.find((user) => user._id !== userId);
+
+    // Return the username of the other user
+    return otherUser ? otherUser.userName : null;
+  }
+  
+  function getReceiverId(users, userId) {
+    // Check if the array has more than two users
+    if (!users?.length) {
+      return null;
+    }
+    if (users?.length > 2) {
+      return null;
+    }
+
+    // Find the user that does not match the given userId
+    const otherUser = users.find((user) => user._id !== userId);
+
+    // Return the username of the other user
+    return otherUser ? otherUser._id : null;
+  }
+
+  function getOtherUserProfileImg(users, userId) {
+    // Check if the array has more than two users
+    if (!users?.length) {
+      return "Group";
+    }
+    if (users?.length > 2) {
+      return "Group";
+    }
+
+    // Find the user that does not match the given userId
+    const otherUser = users.find((user) => user._id !== userId);
+
+    // Return the username of the other user
+    return otherUser ? otherUser.profileImg : null;
+  }
 
   return (
-    <div className=" px-2 py-3">
+    <div className="px-2 py-3 ">
       <div className="">
         {/* filters */}
-        <div className="  rounded-md ">
+        <div className="rounded-md ">
           <input
             type="text"
             placeholder="Search by username..."
-            className=" py-1 px-2 bg-none outline-none w-full border border-secondary rounded-md   "
+            className="w-full px-2 py-1 border rounded-md outline-none bg-none border-secondary"
             value={userName}
             onChange={(e) => {
               setUserName(e.target.value);
@@ -63,39 +110,52 @@ function Support({ handleChatId }) {
 
         <div className="overflow-x-auto mb-3 mt-3 h-[60vh] overflow-y-auto no-scrollbar  rounded-md py-2">
           {loadingMessags ? (
-            <div className="flex justify-center py-4  items-center">
+            <div className="flex items-center justify-center py-4">
               <Loader color="#2667ff" size={24} />
             </div>
           ) : messageData?.data?.message ? (
             <div>
-              <p className="text text-center my-3">
+              <p className="my-3 text-center text">
                 {messageData?.data?.message}
               </p>
             </div>
           ) : (
-            messageData?.data?.messages?.map((item, index) => {
+            messageData?.data?.chats?.map((item, index) => {
               return (
                 <div
                   key={index}
                   className={` mx-2 mb-2 flex justify-between items-center border border-blue-gray-100 dark:border-[#322e74] bg-gray-50 dark:bg-[#101835] px-3 py-1 rounded-md cursor-pointer `}
                   onClick={() => {
-                    handleChatId(item?.jabberId);
+                    handleChatId(
+                      item?._id,
+                      getOtherUserProfileImg(item?.participants, auth?.userId),
+                      getOtherUserName(item?.participants, auth?.userId),
+                      getReceiverId(item?.participants, auth?.userId),
+                    );
                   }}
                 >
-                  <div className="flex gap-3 items-center">
-                    <img src={avatar} alt="avatar" className="w-12 h-12" />
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={
+                        getOtherUserProfileImg(
+                          item?.participants,
+                          auth?.userId
+                        ) || avatar
+                      }
+                      alt="avatar"
+                      className="w-12 h-12 rounded-full "
+                    />
                     <div>
-                      <p className=" capitalize font-bold text-primary  ">
-                        {item?.userName}
+                      <p className="font-bold capitalize text-primary">
+                        {getOtherUserName(item?.participants, auth?.userId)}
                       </p>
-                      <p className="text text-sm ">{item?.jabberId}</p>
-                      <p className="text-sm text-brown-600 ">{item?.role}</p>
+                      <p className="text-sm text-light ">{item?.lastMessage}</p>
                     </div>
                   </div>
                   <div>
-                    {item?.adminUnread > 0 && (
-                      <span className="font-bold bg-primary text-light rounded-full p-1  ">
-                        {item?.adminUnread}
+                    {item?.unreadCount > 0 && (
+                      <span className="p-1 font-bold rounded-full bg-primary text-light ">
+                        {item?.unreadCount}
                       </span>
                     )}
                   </div>

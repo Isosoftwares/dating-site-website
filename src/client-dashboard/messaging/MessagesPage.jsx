@@ -6,11 +6,23 @@ import Conversation from "./Conversation";
 
 function MessagesPage1() {
   const [chatId, setChatId] = useState("");
+  const [profileImg, setProfileImg] = useState("");
+  const [recipientName, setRecipientName] = useState("");
+  const [receiverId, setReceiverId] = useState("");
   const [chatMenu, setChatMenu] = useState(false);
   const queryClient = useQueryClient();
 
-  const handleChatId = (value) => {
-    setChatId(value);
+  const handleChatId = (
+    conversationId = "",
+    profileImg = "",
+    recipientName = "",
+    receiverId = ""
+  ) => {
+    // console.log(conversationId, profileImg, recipientName)
+    setChatId(conversationId);
+    setProfileImg(profileImg);
+    setRecipientName(recipientName);
+    setReceiverId(receiverId);
     setChatMenu(false);
     queryClient.invalidateQueries([`messages-`]);
   };
@@ -18,13 +30,13 @@ function MessagesPage1() {
   return (
     <div>
       <div className="bg-primary/20 pt-[40px] md:pt-[40px] pb-10 px-3 md:px-8 xl:px-[100px]">
-        <div className="flex justify-start gap-4 items-center">
-          <p className="font-bold text-xl text-gray-600">Messages</p>
+        <div className="flex items-center justify-start gap-4">
+          <p className="text-xl font-bold text-gray-600">Messages</p>
         </div>
       </div>
       <div className="mx-auto px-4 md:px-[100px] xl:px-[200px] py-6">
         <div className="flex gap-2">
-          <h1 className="font-bold text-lg mb-2 px-2">Your Chats </h1>
+          <h1 className="px-2 mb-2 text-lg font-bold">Your Chats </h1>
           <div className="lg:hidden">
             {chatMenu ? (
               <span
@@ -64,13 +76,19 @@ function MessagesPage1() {
             <AllChats handleChatId={handleChatId} />
           </div>
 
-          <div className="w-full bg-light shadow-sm rounded">
+          <div className="w-full rounded shadow-sm bg-light">
             {!chatId ? (
-              <p className="text-center text py-2 text-light  bg-secondary  ">
+              <p className="py-2 text-center text text-light bg-secondary ">
                 No chat selected
               </p>
             ) : (
-              <Conversation jabberId={chatId} handleChatId={handleChatId} />
+              <Conversation
+                conversationId={chatId}
+                handleChatId={handleChatId}
+                profileImg={profileImg}
+                recipientName={recipientName}
+                receiverId={receiverId}
+              />
             )}
           </div>
         </div>
