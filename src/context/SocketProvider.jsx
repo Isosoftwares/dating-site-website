@@ -7,6 +7,7 @@ export const SocketContext = createContext(null);
 
 const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
+  const [activeUsers, setActiveUsers] = useState([]); // State for active users
   const { auth } = useAuth();
   const userId = auth?.userId;
 
@@ -22,12 +23,13 @@ const SocketProvider = ({ children }) => {
     // Add the user on connection
     if (userId) {
       newSocket.emit("new-user-add", userId);
-      console.log("User added to active users:", userId);
+      // console.log("User added to active users:", userId);
     }
 
-    // Listen for events if needed (e.g., active users update)
-    newSocket.on("get-users", (activeUsers) => {
-      console.log("Active users:", activeUsers);
+    // Listen for updates to active users
+    newSocket.on("get-users", (users) => {
+      setActiveUsers(users?.map((item) => item?.userId)); // Update state with active users
+      // console.log("Active users updated:", users);
     });
 
     // Clean up on unmount
@@ -37,7 +39,9 @@ const SocketProvider = ({ children }) => {
   }, [userId]);
 
   return (
-    <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
+    <SocketContext.Provider value={{ socket, activeUsers }}>
+      {children}
+    </SocketContext.Provider>
   );
 };
 

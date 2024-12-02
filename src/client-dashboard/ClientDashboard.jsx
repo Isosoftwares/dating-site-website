@@ -259,7 +259,7 @@ function ClientDashboard() {
           onClick={() => {
             if (mobileMenu) setMobileMenu(false);
           }}
-          className="min-h-[150vh] overflow-y-auto"
+          className="min-h-[90vh] overflow-y-auto"
         >
           <Outlet />
         </main>

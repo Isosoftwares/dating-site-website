@@ -5,14 +5,16 @@ import { Pagination, Skeleton } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import UsercardLikes from "./UsercardLikes";
 
-function LikeProfiles() {
+function ViewedProfiles() {
   const axios = useAxiosPrivate();
   const { auth } = useAuth();
   const [perPage, setPerPage] = useState(36);
   const [activePage, setPage] = useState(1);
 
   const getProfiles = async ({}) => {
-    return await axios.get(`/user/liked-by/${auth?.userId}?page=${activePage}&limit=${perPage}`);
+    return await axios.get(
+      `/user/viewed-profiles/${auth?.userId}?page=${activePage}&limit=${perPage}`
+    );
   };
 
   const {
@@ -22,7 +24,7 @@ function LikeProfiles() {
     isRefetching: refetchingUsers,
   } = useQuery({
     queryFn: getProfiles,
-    queryKey: [`liked-me-${auth?.userId}`],
+    queryKey: [`viewed-profiles`],
     keepPreviousData: true,
   });
 
@@ -31,11 +33,12 @@ function LikeProfiles() {
   useEffect(() => {
     refetchUsers();
   }, [perPage, activePage]);
+
   return (
     <div>
-      <div className="mt-4 pb-14">
+      <div className="pb-14">
         {loadingUsers ? (
-          <div className="grid grid-cols-2 gap-3 md:grid-cols-5 ">
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-5">
             <Skeleton height={200} />
             <Skeleton height={200} />
             <Skeleton height={200} />
@@ -44,9 +47,7 @@ function LikeProfiles() {
           </div>
         ) : usersData?.data?.message ? (
           <div className="py-10 bg-light ">
-            <p className="font-bold text-center ">
-              {usersData?.data?.message}
-            </p>
+            <p className="font-bold text-center ">{usersData?.data?.message}</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-3 mt-4 lg:grid-cols-3 xl:grid-cols-4 md:grid-cols-2">
@@ -78,4 +79,4 @@ function LikeProfiles() {
   );
 }
 
-export default LikeProfiles;
+export default ViewedProfiles;

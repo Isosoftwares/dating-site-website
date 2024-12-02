@@ -30,6 +30,7 @@ const useRefreshToken = () => {
         userId: response?.data?.user_Id,
         email: response?.data?.email,
         imgUrl: response?.data?.imgUrl,
+        favorites: response?.data?.favorites || [],
       };
     });
     return response?.data?.accessToken;

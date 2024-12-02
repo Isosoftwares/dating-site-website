@@ -8,11 +8,11 @@ import UsercardLikes from "./UsercardLikes";
 function FavoriteProfiles() {
   const axios = useAxiosPrivate();
   const { auth } = useAuth();
-  const [perPage, setPerPage] = useState(36);
+  const [perPage, setPerPage] = useState(20);
   const [activePage, setPage] = useState(1);
 
   const getProfiles = async ({}) => {
-    return await axios.get(`/user?page=${activePage}&perPage=${perPage}`);
+    return await axios.get(`/user/my-favorites/${auth?.userId}?page=${activePage}&limit=${perPage}`);
   };
 
   const {
@@ -22,7 +22,7 @@ function FavoriteProfiles() {
     isRefetching: refetchingUsers,
   } = useQuery({
     queryFn: getProfiles,
-    queryKey: [`likeusers`],
+    queryKey: [`favoriteusers`],
     keepPreviousData: true,
   });
 
@@ -35,7 +35,7 @@ function FavoriteProfiles() {
     <div>
       <div className="pb-14">
         {loadingUsers ? (
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-5">
             <Skeleton height={200} />
             <Skeleton height={200} />
             <Skeleton height={200} />
@@ -43,13 +43,13 @@ function FavoriteProfiles() {
             <Skeleton height={200} />
           </div>
         ) : usersData?.data?.message ? (
-          <div className="bg-light py-10  ">
-            <p className="text-center font-bold  ">
+          <div className="py-10 bg-light ">
+            <p className="font-bold text-center ">
               {usersData?.data?.message}
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 md:grid-cols-2 gap-3 mt-4">
+          <div className="grid grid-cols-1 gap-3 mt-4 lg:grid-cols-3 xl:grid-cols-4 md:grid-cols-2">
             {usersData?.data?.users?.map((item, index) => {
               if (item?.profileImg && !item?.images.includes(item.profileImg)) {
                 item.images.push(item.profileImg);
@@ -64,7 +64,7 @@ function FavoriteProfiles() {
           </div>
         )}
         {totalPages > 0 && (
-          <div className="mt-4 bg-light py-3 px-2  ">
+          <div className="px-2 py-3 mt-4 bg-light ">
             <Pagination
               color="orange"
               value={activePage}

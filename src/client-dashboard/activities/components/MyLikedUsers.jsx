@@ -5,14 +5,14 @@ import { Pagination, Skeleton } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import UsercardLikes from "./UsercardLikes";
 
-function LikeProfiles() {
+function MyLikedUsers() {
   const axios = useAxiosPrivate();
   const { auth } = useAuth();
   const [perPage, setPerPage] = useState(36);
   const [activePage, setPage] = useState(1);
 
   const getProfiles = async ({}) => {
-    return await axios.get(`/user/liked-by/${auth?.userId}?page=${activePage}&limit=${perPage}`);
+    return await axios.get(`/user/my-likes/${auth?.userId}?page=${activePage}&limit=${perPage}`);
   };
 
   const {
@@ -22,7 +22,7 @@ function LikeProfiles() {
     isRefetching: refetchingUsers,
   } = useQuery({
     queryFn: getProfiles,
-    queryKey: [`liked-me-${auth?.userId}`],
+    queryKey: [`my-likeusers-${auth?.userId}`],
     keepPreviousData: true,
   });
 
@@ -78,4 +78,4 @@ function LikeProfiles() {
   );
 }
 
-export default LikeProfiles;
+export default MyLikedUsers;

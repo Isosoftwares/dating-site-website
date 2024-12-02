@@ -9,6 +9,7 @@ function MessagesPage1() {
   const [profileImg, setProfileImg] = useState("");
   const [recipientName, setRecipientName] = useState("");
   const [receiverId, setReceiverId] = useState("");
+  const [openedChatId, setOpenedChatId] = useState("");
   const [chatMenu, setChatMenu] = useState(false);
   const queryClient = useQueryClient();
 
@@ -20,6 +21,7 @@ function MessagesPage1() {
   ) => {
     // console.log(conversationId, profileImg, recipientName)
     setChatId(conversationId);
+    setOpenedChatId(conversationId); // Update opened chat
     setProfileImg(profileImg);
     setRecipientName(recipientName);
     setReceiverId(receiverId);
@@ -62,7 +64,7 @@ function MessagesPage1() {
 
         <div className="flex gap-2 ">
           <div className="hidden lg:inline-block w-[500px] bg-light shadow-sm rounded  ">
-            <AllChats handleChatId={handleChatId} />
+            <AllChats handleChatId={handleChatId} openedChatId={openedChatId} />
           </div>
 
           {/* mobile */}
@@ -73,12 +75,12 @@ function MessagesPage1() {
                 : "hidden"
             }`}
           >
-            <AllChats handleChatId={handleChatId} />
+            <AllChats handleChatId={handleChatId} openedChatId={openedChatId} />
           </div>
 
           <div className="w-full rounded shadow-sm bg-light">
             {!chatId ? (
-              <p className="py-2 text-center text text-light bg-secondary ">
+              <p className="py-2 italic text-center text-gray-500">
                 No chat selected
               </p>
             ) : (

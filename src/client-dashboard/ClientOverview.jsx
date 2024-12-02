@@ -18,10 +18,8 @@ import UploadProfilePic from "./components/UploadProfilePic";
 function ClientOverview() {
   const axios = useAxiosPrivate();
   const { auth } = useAuth();
-  const [
-    openedUploadPic,
-    { open: openUploadPic, close: closeUploadPic },
-  ] = useDisclosure(false);
+  const [openedUploadPic, { open: openUploadPic, close: closeUploadPic }] =
+    useDisclosure(false);
 
   // get user
   const getUser = async () => {
@@ -39,6 +37,17 @@ function ClientOverview() {
     keepPreviousData: true,
   });
 
+    // get my profile
+    const getMyProfileStats = async () => {
+      return await axios.get(`/user/profile-stats/${auth?.userId}`);
+    };
+    const { isLoading: loadingProfileDataStats, data: profileDataStats } = useQuery({
+      queryFn: getMyProfileStats,
+      queryKey: [`client-profile-stats-${auth?.userId}`],
+      keepPreviousData: true,
+    });
+
+
   return (
     <div className="">
       <Modal
@@ -51,9 +60,9 @@ function ClientOverview() {
       {/* user info */}
       <div className="bg-primary/20  pt-[40px] md:pt-[60px] pb-14 px-3 md:px-8 xl:px-[100px] ">
         <Skeleton visible={loadingUser}>
-          <div className="flex flex-col lg:flex-row gap-4 justify-between items-center">
+          <div className="flex flex-col items-center justify-between gap-4 lg:flex-row">
             {/* profile */}
-            <div className="flex gap-5 w-full">
+            <div className="flex w-full gap-5">
               <div>
                 <Avatar
                   size="xl"
@@ -67,26 +76,26 @@ function ClientOverview() {
                 </p>
                 <div>
                   <Link>
-                    <p className="text-light bg-secondary text-center px-6 rounded-md shadow-xl cursor-pointer  ">
+                    <p className="px-6 text-center rounded-md shadow-xl cursor-pointer text-light bg-secondary ">
                       Upgrade to premium{" "}
                     </p>
                   </Link>
-                  <div className="flex flex-col md:flex-row mt-4 gap-3 ">
+                  <div className="flex flex-col gap-3 mt-4 md:flex-row ">
                     <span
                       onClick={openUploadPic}
-                      className="text-gray-700 cursor-pointer underline text-md "
+                      className="text-gray-700 underline cursor-pointer text-md "
                     >
                       {" "}
                       Add Profile Picture{" "}
                     </span>
                     <Link
                       to={"/client/edit-profile"}
-                      className="text-gray-700 cursor-pointer underline text-md "
+                      className="text-gray-700 underline cursor-pointer text-md "
                     >
                       Update Your Match Info
                     </Link>
                   </div>
-                  <div className="flex flex-col md:flex-row  mt-4 gap-3 ">
+                  <div className="flex flex-col gap-3 mt-4 md:flex-row ">
                     <span className={`  cursor-pointer text-md `}>
                       Location:{" "}
                       <span
@@ -105,7 +114,7 @@ function ClientOverview() {
                     </span>
                     <Link
                       to={"/client/edit-profile"}
-                      className="text-gray-700 cursor-pointer underline text-md "
+                      className="text-gray-700 underline cursor-pointer text-md "
                     >
                       Update Location
                     </Link>
@@ -116,14 +125,14 @@ function ClientOverview() {
 
             {/* other details */}
             <div className="w-full">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+              <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
                 <Link>
                   <div className="bg-[#edf7ed] flex  gap-4 rounded-md cursor-pointer">
-                    <span className="bg-primary/80 py-3 px-4 rounded-l-md ">
+                    <span className="px-4 py-3 bg-primary/80 rounded-l-md ">
                       <FaRegMessage size={30} color="#FEF3E2" />
                     </span>
                     <div className="mt-3">
-                      <p className="font-bold text-sm ">Messages</p>
+                      <p className="text-sm font-bold ">Messages</p>
                       <p className="text-center">23</p>
                     </div>
                   </div>
@@ -134,8 +143,10 @@ function ClientOverview() {
                       <FaRegHeart size={30} color="#FEF3E2" />
                     </span>
                     <div className="mt-3">
-                      <p className="font-bold text-sm ">Likes</p>
-                      <p className="text-center">5</p>
+                      <p className="text-sm font-bold ">Likes</p>
+                      <p className="text-center">
+                        {profileDataStats?.data?.totalLikes || 0}
+                      </p>
                     </div>
                   </div>
                 </Link>
@@ -145,8 +156,10 @@ function ClientOverview() {
                       <IoEyeOutline size={30} color="#FEF3E2" />
                     </span>
                     <div className="mt-3">
-                      <p className="font-bold text-sm ">Views</p>
-                      <p className="text-center">23</p>
+                      <p className="text-sm font-bold ">Views</p>
+                      <p className="text-center">
+                        {profileDataStats?.data?.totalProfileViews|| 0}
+                      </p>
                     </div>
                   </div>
                 </Link>
@@ -156,8 +169,10 @@ function ClientOverview() {
                       <FaRegStar size={30} color="#FEF3E2" />
                     </span>
                     <div className="mt-3">
-                      <p className="font-bold text-sm ">Favorites</p>
-                      <p className="text-center">23</p>
+                      <p className="text-sm font-bold ">Favorites</p>
+                      <p className="text-center">
+                        {profileDataStats?.data?.totalFavorited|| 0}
+                      </p>
                     </div>
                   </div>
                 </Link>

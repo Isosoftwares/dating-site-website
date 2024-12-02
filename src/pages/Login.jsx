@@ -37,8 +37,9 @@ function Login() {
         userName: userName,
         email,
         imgUrl,
+        favorites = []
       } = response?.data;
-      setAuth({ roles, accessToken, userId, userName, email, imgUrl });
+      setAuth({ roles, accessToken, userId, userName, email, imgUrl, favorites });
       localStorage.setItem("userId", JSON.stringify(userId));
       const text = `Welcome back ${userName || ""}`;
       if (roles?.includes("Client")) {
@@ -68,25 +69,25 @@ function Login() {
       <div className=" bg-gradient-to-b md:bg-gradient-to-r from-[#14151d] bg-opacity-30 min-h-screen  ">
         <NavBar />
         <div className=" p-4 mdp-8 bg-light/5 h-[70vh] mt-10 md:mx-4 rounded-lg w-full md:max-w-[50%] lg:max-w-[40%]  text-gray-800 shadow-lg">
-          <h2 className="text-2xl font-semibold text-light text-center mb-6">
+          <h2 className="mb-6 text-2xl font-semibold text-center text-light">
             Login
           </h2>
 
           <form onSubmit={handleSubmit(onSubmitting)} className="space-y-1">
             <div>
-              <label className="block text-light font-medium mb-1">Email</label>
+              <label className="block mb-1 font-medium text-light">Email</label>
               <input
                 type="email"
                 {...register("email", { required: true })}
-                className="bg-gray-50/10 text-gray-50   focus:outline-none focus:border-primary focus:dark:border-primary border  border-primary   rounded-md py-2 px-4  w-full appearance-none disabled:cursor-not-allowed"
+                className="w-full px-4 py-2 border rounded-md appearance-none bg-gray-50/10 text-gray-50 focus:outline-none focus:border-primary focus:dark:border-primary border-primary disabled:cursor-not-allowed"
               />
               {errors?.email?.type === "required" && (
-                <p className="text-red-500 text-sm mt-1">Email is required</p>
+                <p className="mt-1 text-sm text-red-500">Email is required</p>
               )}
             </div>
 
             <div>
-              <label className="block text-light font-medium mb-1">
+              <label className="block mb-1 font-medium text-light">
                 Password
               </label>
               <div className="relative">
@@ -95,18 +96,18 @@ function Login() {
                   {...register("password", {
                     required: true,
                   })}
-                  className="bg-gray-50/10 text-gray-50   focus:outline-none focus:border-primary focus:dark:border-primary border  border-primary   rounded-md py-2 px-4  w-full appearance-none disabled:cursor-not-allowed"
+                  className="w-full px-4 py-2 border rounded-md appearance-none bg-gray-50/10 text-gray-50 focus:outline-none focus:border-primary focus:dark:border-primary border-primary disabled:cursor-not-allowed"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500"
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500"
                 >
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </button>
               </div>
               {errors?.password?.type === "required" && (
-                <p className="text-red-500 text-sm mt-1">
+                <p className="mt-1 text-sm text-red-500">
                   Password is required
                 </p>
               )}
@@ -114,17 +115,17 @@ function Login() {
             <div className="py-5">
               <button
                 type="submit"
-                className="w-full bg-primary hover:bg-primary-dark text-white py-2 rounded-lg transition duration-150"
+                className="w-full py-2 text-white transition duration-150 rounded-lg bg-primary hover:bg-primary-dark"
                 disabled={loginLoading}
               >
                 {loginLoading ? <Loader size="sm" color="white" /> : "Login"}
               </button>
             </div>
 
-            <div className="text-center mt-4">
+            <div className="mt-4 text-center">
               <p className="text-sm text-gray-50">
                 Not a member?{" "}
-                <Link to="/sign-up" className="text-primary font-bold text-lg">
+                <Link to="/sign-up" className="text-lg font-bold text-primary">
                   Join Now!
                 </Link>
               </p>

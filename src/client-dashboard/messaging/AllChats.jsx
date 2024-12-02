@@ -5,7 +5,7 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import avatar from "../../assets/avatar.png";
 import useAuth from "../../hooks/useAuth";
 
-function Support({ handleChatId }) {
+function Support({ handleChatId, openedChatId }) {
   const axios = useAxiosPrivate();
 
   const [perPage, setPerPage] = useState(10);
@@ -28,11 +28,11 @@ function Support({ handleChatId }) {
     refetch,
     isRefetching: refetchingMessages,
   } = useQuery({
-    queryKey: [`messages-`, activePage],
+    queryKey: [`chats-${auth?.userId}`, activePage],
     queryFn: fetchMessages,
     refetchOnWindowFocus: true,
     keepPreviousData: true,
-    refetchInterval: 5000,
+    refetchInterval: 10000,
   });
 
   const totalPages = Math.ceil(messageData?.data?.count / perPage) || 0;
@@ -57,7 +57,7 @@ function Support({ handleChatId }) {
     // Return the username of the other user
     return otherUser ? otherUser.userName : null;
   }
-  
+
   function getReceiverId(users, userId) {
     // Check if the array has more than two users
     if (!users?.length) {
@@ -94,18 +94,7 @@ function Support({ handleChatId }) {
     <div className="px-2 py-3 ">
       <div className="">
         {/* filters */}
-        <div className="rounded-md ">
-          <input
-            type="text"
-            placeholder="Search by username..."
-            className="w-full px-2 py-1 border rounded-md outline-none bg-none border-secondary"
-            value={userName}
-            onChange={(e) => {
-              setUserName(e.target.value);
-              setPage(1);
-            }}
-          />
-        </div>
+
         {/* end of filters */}
 
         <div className="overflow-x-auto mb-3 mt-3 h-[60vh] overflow-y-auto no-scrollbar  rounded-md py-2">
@@ -124,13 +113,13 @@ function Support({ handleChatId }) {
               return (
                 <div
                   key={index}
-                  className={` mx-2 mb-2 flex justify-between items-center border border-blue-gray-100 dark:border-[#322e74] bg-gray-50 dark:bg-[#101835] px-3 py-1 rounded-md cursor-pointer `}
+                  className={` mx-2 mb-2 flex justify-between items-center border border-blue-gray-100  bg-gray-50 px-3 py-1 rounded-md cursor-pointer `}
                   onClick={() => {
                     handleChatId(
                       item?._id,
                       getOtherUserProfileImg(item?.participants, auth?.userId),
                       getOtherUserName(item?.participants, auth?.userId),
-                      getReceiverId(item?.participants, auth?.userId),
+                      getReceiverId(item?.participants, auth?.userId)
                     );
                   }}
                 >
@@ -149,11 +138,13 @@ function Support({ handleChatId }) {
                       <p className="font-bold capitalize text-primary">
                         {getOtherUserName(item?.participants, auth?.userId)}
                       </p>
-                      <p className="text-sm text-light ">{item?.lastMessage}</p>
+                      <p className="text-sm text-gray-500 ">
+                        {item?.lastMessage}
+                      </p>
                     </div>
                   </div>
                   <div>
-                    {item?.unreadCount > 0 && (
+                    {item?.unreadCount > 0 && item?._id !== openedChatId && (
                       <span className="p-1 font-bold rounded-full bg-primary text-light ">
                         {item?.unreadCount}
                       </span>
