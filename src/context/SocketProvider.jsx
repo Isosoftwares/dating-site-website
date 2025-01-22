@@ -10,10 +10,11 @@ const SocketProvider = ({ children }) => {
   const [activeUsers, setActiveUsers] = useState([]); // State for active users
   const { auth } = useAuth();
   const userId = auth?.userId;
+  const socketLink = "https://socket.lovealto.com";
 
   useEffect(() => {
     // Establish socket connection
-    const newSocket = io("http://localhost:8800", {
+    const newSocket = io(socketLink, {
       transports: ["websocket"], // Ensure WebSocket is used
       reconnection: true,
     });
