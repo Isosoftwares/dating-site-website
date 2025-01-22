@@ -11,7 +11,11 @@ function OverviewProfiles() {
   const { auth } = useAuth();
   const [perPage, setPerPage] = useState(36);
   const [activePage, setPage] = useState(1);
-  const [seeking, setSeeking] = useState("male");
+  const [seeking, setSeeking] = useState("");
+  const [city, setCity] = useState("");
+  const [country, setCountry] = useState("");
+  const [ageFrom, setAgeFrom] = useState("");
+  const [ageTo, setAgeTo] = useState("");
 
   const [showFilters, setShowFilters] = useState(true);
 
@@ -36,7 +40,7 @@ function OverviewProfiles() {
 
   useEffect(() => {
     refetchUsers();
-  }, [perPage, activePage]);
+  }, [perPage, activePage, seeking, country, city, ageFrom, ageTo]);
 
   return (
     <div className="px-3 md:px-8 xl:px-[100px]">
@@ -49,7 +53,14 @@ function OverviewProfiles() {
       >
         <div>
           <label htmlFor="">seeking</label>
-          <select name="" className="input" id="">
+          <select
+            name=""
+            className="input"
+            id=""
+            onChange={(e) => {
+              setSeeking(e.target.value);
+            }}
+          >
             <option value="">Select....</option>
             <option value="female">Female</option>
             <option value="male">Male</option>
@@ -57,19 +68,45 @@ function OverviewProfiles() {
         </div>
         <div>
           <label htmlFor="">Country</label>
-          <input type="text" className="input" />
+          <input
+            onChange={(e) => {
+              setCountry(e.target.value);
+            }}
+            type="text"
+            className="input"
+          />
         </div>
         <div>
           <label htmlFor="">City</label>
-          <input type="text" className="input" />
+          <input
+            onChange={(e) => {
+              setCity(e.target.value);
+            }}
+            type="text"
+            className="input"
+          />
         </div>
         <div>
-          <label htmlFor="">seeking</label>
-          <select name="" className="input" id="">
-            <option value="">Select....</option>
-            <option value="female">Female</option>
-            <option value="male">Male</option>
-          </select>
+          <label htmlFor="">Age</label>
+          <div className="flex gap-1">
+            <input
+              type="number"
+              placeholder="From"
+              className="input"
+              onChange={(e) => {
+                setAgeFrom(e.target.value);
+              }}
+            />
+            -
+            <input
+              type="number"
+              className="input"
+              placeholder="To"
+              onChange={(e) => {
+                setAgeTo(e.target.value);
+              }}
+            />
+          </div>
         </div>
       </div>
 
@@ -89,7 +126,7 @@ function OverviewProfiles() {
           </p>
         </div>
 
-        {loadingUsers ? (
+        {loadingUsers || refetchingUsers ? (
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
             <Skeleton height={200} />
             <Skeleton height={200} />
@@ -109,6 +146,9 @@ function OverviewProfiles() {
               // Check if profileImg exists and is not already in the images array
               if (item?.profileImg && !item?.images.includes(item.profileImg)) {
                 item.images.push(item.profileImg);
+              }
+              if (item?._id === auth?.userId) {
+                return null;
               }
 
               return (

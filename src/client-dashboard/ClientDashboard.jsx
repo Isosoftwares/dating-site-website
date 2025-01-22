@@ -40,7 +40,7 @@ function ClientDashboard() {
   };
 
   const navLinks = [
-    { id: 1, name: "Online", path: "/client/online" },
+    // { id: 1, name: "Online", path: "/client/online" },
     { id: 2, name: "Messages", path: "/client/messages" },
     { id: 3, name: "Profile", path: "/client/Profile" },
     { id: 4, name: "Activity", path: "/client/activity" },
@@ -89,10 +89,10 @@ function ClientDashboard() {
           </div>
           {/* Links */}
           <div className="hidden w-full gap-4 lg:flex justify-evenly">
-            {navLinks.map((item) => {
+            {navLinks.map((item, index) => {
               if (item?.name === "Activity")
                 return (
-                  <Menu shadow="md" width={200} trigger="click-hover">
+                  <Menu key={index} shadow="md" width={200} trigger="click-hover">
                     <Menu.Target>
                       <div className="flex items-center gap-1 cursor-pointer text-light hover:underline underline-offset-4 ">
                         <p className="text-light ">Activity</p>

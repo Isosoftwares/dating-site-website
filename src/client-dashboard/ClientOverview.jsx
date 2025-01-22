@@ -18,8 +18,10 @@ import UploadProfilePic from "./components/UploadProfilePic";
 function ClientOverview() {
   const axios = useAxiosPrivate();
   const { auth } = useAuth();
-  const [openedUploadPic, { open: openUploadPic, close: closeUploadPic }] =
-    useDisclosure(false);
+  const [
+    openedUploadPic,
+    { open: openUploadPic, close: closeUploadPic },
+  ] = useDisclosure(false);
 
   // get user
   const getUser = async () => {
@@ -37,16 +39,18 @@ function ClientOverview() {
     keepPreviousData: true,
   });
 
-    // get my profile
-    const getMyProfileStats = async () => {
-      return await axios.get(`/user/profile-stats/${auth?.userId}`);
-    };
-    const { isLoading: loadingProfileDataStats, data: profileDataStats } = useQuery({
-      queryFn: getMyProfileStats,
-      queryKey: [`client-profile-stats-${auth?.userId}`],
-      keepPreviousData: true,
-    });
-
+  // get my profile
+  const getMyProfileStats = async () => {
+    return await axios.get(`/user/profile-stats/${auth?.userId}`);
+  };
+  const {
+    isLoading: loadingProfileDataStats,
+    data: profileDataStats,
+  } = useQuery({
+    queryFn: getMyProfileStats,
+    queryKey: [`client-profile-stats-${auth?.userId}`],
+    keepPreviousData: true,
+  });
 
   return (
     <div className="">
@@ -75,7 +79,7 @@ function ClientOverview() {
                   Hello, <span className="font-bold">{auth?.userName}</span>
                 </p>
                 <div>
-                  <Link>
+                  <Link to={"/client/upgrade"}>
                     <p className="px-6 text-center rounded-md shadow-xl cursor-pointer text-light bg-secondary ">
                       Upgrade to premium{" "}
                     </p>
@@ -133,7 +137,7 @@ function ClientOverview() {
                     </span>
                     <div className="mt-3">
                       <p className="text-sm font-bold ">Messages</p>
-                      <p className="text-center">23</p>
+                      <p className="text-center">0</p>
                     </div>
                   </div>
                 </Link>
@@ -158,7 +162,7 @@ function ClientOverview() {
                     <div className="mt-3">
                       <p className="text-sm font-bold ">Views</p>
                       <p className="text-center">
-                        {profileDataStats?.data?.totalProfileViews|| 0}
+                        {profileDataStats?.data?.totalProfileViews || 0}
                       </p>
                     </div>
                   </div>
@@ -171,7 +175,7 @@ function ClientOverview() {
                     <div className="mt-3">
                       <p className="text-sm font-bold ">Favorites</p>
                       <p className="text-center">
-                        {profileDataStats?.data?.totalFavorited|| 0}
+                        {profileDataStats?.data?.totalFavorited || 0}
                       </p>
                     </div>
                   </div>
